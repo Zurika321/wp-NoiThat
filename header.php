@@ -18,20 +18,6 @@
 
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>
+<div id="backTop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
 
-<!-- NAVBAR -->
-<header class="navbar" id="navbar">
-  <div class="container nav-inner">
-    <a href="#home" class="brand">MỘC</a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#home" class="nav-link active">Home</a>
-      <a href="#products" class="nav-link">Products</a>
-      <a href="#gallery" class="nav-link">Collection</a>
-      <a href="#brand" class="nav-link">About</a>
-      <a href="#blog" class="nav-link">Blog</a>
-      <a href="#footer" class="nav-link">Contact</a>
-    </nav>
-    <a href="#products" class="nav-cta btn-ripple">Shop Now</a>
-    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
-  </div>
-</header>
+

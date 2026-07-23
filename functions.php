@@ -1,23 +1,13 @@
 <?php
 /* tên folder themes : themes_custom
 file: functions.php */ 
-// function mytheme_enqueue() { //css tổng
-
-//     wp_enqueue_style(
-//         'style',
-//         get_stylesheet_uri()
-//     );
-
-// }
-
-// add_action('wp_enqueue_scripts', 'mytheme_enqueue');
 // add_filter('show_admin_bar', '__return_false');
 function mytheme_assets() {
 
     // CSS
     wp_enqueue_style(
         'theme-style',
-        get_template_directory_uri() . '/assets/css/style.css',
+        get_template_directory_uri() . '/assets/css/main.css',
         [],
         '1.0'
     );
@@ -53,6 +43,70 @@ function mytheme_assets() {
         '1.0',
         true
     );
+    // Trang chủ
+    if (is_front_page()) {
+
+        wp_enqueue_style(
+            'home-css',
+            get_template_directory_uri() . '/assets/css/index.css'
+        );
+
+        wp_enqueue_script(
+            'home-js',
+            get_template_directory_uri() . '/assets/js/index.js',
+            [],
+            '1.0',
+            true
+        );
+    }
+
+    // Trang Cart
+    if (is_page('cart')) {
+
+        wp_enqueue_style(
+            'cart-css',
+            get_template_directory_uri() . '/assets/css/cart.css'
+        );
+
+        wp_enqueue_script(
+            'cart-js',
+            get_template_directory_uri() . '/assets/js/cart.js',
+            [],
+            '1.0',
+            true
+        );
+    }
+
+    //Trang About
+    if (is_page('about')) {
+        wp_enqueue_style(
+            'about-css',
+            get_template_directory_uri() . '/assets/css/cart.css'
+        );
+
+        wp_enqueue_script(
+            'about-js',
+            get_template_directory_uri() . '/assets/js/cart.js',
+            [],
+            '1.0',
+            true
+        );  
+    }
+
+    //Trang Products
+    if (is_page('products')) {
+        wp_enqueue_style(
+            'products-css',
+            get_template_directory_uri() . '/assets/css/products.css'
+        );
+        wp_enqueue_script(
+            'products-js',
+            get_template_directory_uri() . '/assets/js/products.js',
+            [],
+            '1.0',
+            true
+        );
+    }
 }
 
 add_action('wp_enqueue_scripts', 'mytheme_assets');
