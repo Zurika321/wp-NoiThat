@@ -107,6 +107,31 @@ function mytheme_assets() {
             true
         );
     }
+
+    //Trang 404 
+    if (is_404()) {
+        wp_enqueue_style(
+            '404-css',
+            get_template_directory_uri() . '/assets/css/404.css'
+        );
+        wp_enqueue_script(
+            '404-js',
+            get_template_directory_uri() . '/assets/js/cart.js',
+            [],
+            '1.0',
+            true
+        );
+    }
 }
 
 add_action('wp_enqueue_scripts', 'mytheme_assets');
+
+add_action('template_redirect', 'my_protect_pages');
+
+function my_protect_pages() {
+
+    if (is_page('cart') && !is_user_logged_in()) {
+        wp_redirect(wp_login_url());
+        exit;
+    }
+}

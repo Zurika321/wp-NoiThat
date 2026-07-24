@@ -14,7 +14,14 @@
 
 <body <?php body_class(); ?>>
 
-<div id="preloader"><div class="logo">MỘC</div><div class="preload-bar"><span id="preloadFill"></span></div></div>
+<?php if (is_front_page()): ?>
+  <div id="preloader">
+    <div class="logo">MỘC</div>
+    <div class="preload-bar">
+      <span id="preloadFill"></span>
+    </div>
+  </div>
+<?php endif; ?>
 
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>

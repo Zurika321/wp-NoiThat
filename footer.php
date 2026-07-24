@@ -1,3 +1,29 @@
+<style>/* footer */
+footer {
+  background: var(--black);
+  color: rgba(255, 255, 255, 0.75);
+  padding: 90px 0 30px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 50px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.footer-brand .brand {
+  color: var(--white);
+  margin-bottom: 16px;
+  display: block;
+}
+.footer-brand p {
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 22px;
+  color: rgba(255, 255, 255, 0.55);
+}
+</style>
 <!-- FOOTER -->
 <footer id="footer">
   <div class="container">
