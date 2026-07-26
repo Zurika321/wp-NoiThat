@@ -81,12 +81,12 @@ function mytheme_assets() {
     if (is_page('about')) {
         wp_enqueue_style(
             'about-css',
-            get_template_directory_uri() . '/assets/css/cart.css'
+            get_template_directory_uri() . '/assets/css/about.css'
         );
 
         wp_enqueue_script(
             'about-js',
-            get_template_directory_uri() . '/assets/js/cart.js',
+            get_template_directory_uri() . '/assets/js/about.js',
             [],
             '1.0',
             true
@@ -102,6 +102,21 @@ function mytheme_assets() {
         wp_enqueue_script(
             'products-js',
             get_template_directory_uri() . '/assets/js/products.js',
+            [],
+            '1.0',
+            true
+        );
+    }
+
+    //Trang Blog 
+    if (is_page('blog')) {
+        wp_enqueue_style(
+            'blog-css',
+            get_template_directory_uri() . '/assets/css/blog.css'
+        );
+        wp_enqueue_script(
+            'blog-js',
+            get_template_directory_uri() . '/assets/js/blog.js',
             [],
             '1.0',
             true

@@ -49,15 +49,6 @@ const observer = new IntersectionObserver(
 
 sectionsForSpy.forEach((sec) => observer.observe(sec));
 
-window.addEventListener("scroll", () => {
-  navbar.classList.toggle("scrolled", window.scrollY > 80);
-  // backTop.classList.toggle("show", window.scrollY > 500);
-});
-
-// backTop.addEventListener("click", () =>
-//   window.scrollTo({ top: 0, behavior: "smooth" }),
-// );
-
 /* ================= HERO ENTRANCE (GSAP) ================= */
 function playHeroAnim() {
   gsap

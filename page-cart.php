@@ -1,5 +1,5 @@
 <body>
-   <?php get_header('cart'); ?>
+   <?php get_header('chung'); ?>
 <div id="app">
   <div class="panel-viewport" id="panel-viewport"></div>
 

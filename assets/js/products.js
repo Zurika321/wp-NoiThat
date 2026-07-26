@@ -1,13 +1,3 @@
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    navbar.classList.add("in");
-  }, 500);
-  window.addEventListener("scroll", () => {
-    navbar.classList.toggle("scrolled", window.scrollY > 80);
-    // backTop.classList.toggle("show", window.scrollY > 500);
-  });
-});
-
 AOS.init({
   duration: 800,
   easing: "ease-out-cubic",

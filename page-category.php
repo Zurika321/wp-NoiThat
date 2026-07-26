@@ -1,5 +1,5 @@
 <?php
-get_header();
+get_header("chung");
 $categories = get_the_category();
 
 if (!empty($categories)) {

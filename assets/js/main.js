@@ -2,8 +2,18 @@ const backTop = document.getElementById("backTop") ?? null;
 const navLinksEls = document.querySelectorAll(".nav-link");
 
 window.addEventListener("scroll", () => {
-  // navbar.classList.toggle("scrolled", window.scrollY > 80);
+  if (navbar) {
+    navbar.classList.toggle("scrolled", window.scrollY > 80);
+  }
   backTop?.classList.toggle("show", window.scrollY > 500);
+});
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    if (navbar) {
+      navbar.classList.add("in");
+    }
+  }, 500);
 });
 
 backTop?.addEventListener("click", () =>
@@ -13,10 +23,13 @@ backTop?.addEventListener("click", () =>
 /* Mobile menu */
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
-navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
-navLinksEls.forEach((l) =>
-  l.addEventListener("click", () => navLinks.classList.remove("open")),
-);
+if (navToggle && navLinks) {
+  navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
+  navLinksEls.forEach((l) =>
+    l.addEventListener("click", () => navLinks.classList.remove("open")),
+  );
+}
+
 /* ================= AOS ================= */
 AOS.init({ duration: 800, easing: "ease-out-cubic", once: true, offset: 60 });
 

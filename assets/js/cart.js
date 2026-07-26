@@ -1,6 +1,3 @@
-setTimeout(() => {
-  navbar.classList.add("in");
-}, 500);
 /* ================= NAVBAR SCROLL + SCROLLSPY ================= */
 
 window.addEventListener("scroll", () => {

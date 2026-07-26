@@ -96,7 +96,7 @@ if (!is_front_page()) {
 
 </header>
 
-<?php if (!is_page('products')) : ?>
+<?php if (!is_page('products') && !is_page('about')) : ?>
 
 <div style="height:60px;background:black;"></div>
 <div style="height:20px;"></div>

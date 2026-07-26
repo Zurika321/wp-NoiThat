@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php get_header("index"); ?>
 <!-- NAVBAR -->
 <header class="navbar" id="navbar">
   <div class="container nav-inner">
