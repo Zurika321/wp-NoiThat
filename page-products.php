@@ -1,4 +1,11 @@
        <?php get_header('chung'); ?>
+       <?php
+require_once get_template_directory() . '/data/products-data.php';
+
+function fmt_price($price){
+    return number_format($price,0,",",".") . "₫";
+}
+?>
     <!-- BANNER -->
     <section class="p-banner">
       <div
@@ -15,6 +22,10 @@
         <h1 data-aos="fade-up" data-aos-delay="100">Sản phẩm</h1>
       </div>
     </section>
+
+   <!-- echo '<pre>';
+var_dump($products); ?>
+echo '</pre>';  -->
 
     <!-- TOOLBAR -->
     <div class="toolbar" id="toolbar">
@@ -205,7 +216,193 @@
 
           <!-- PRODUCT GRID -->
           <div class="grid-wrap">
-            <div class="product-grid" id="productGrid"></div>
+            <div class="product-grid" id="productGrid">
+
+<?php foreach($data_products as $p): ?>
+
+<?php
+
+$discount = 0;
+
+if(!empty($p['oldPrice']) && $p['oldPrice'] > $p['price']){
+    $discount = round(
+        (1 - $p['price']/$p['oldPrice'])*100
+    );
+}
+
+?>
+
+<div
+class="p-card"
+
+data-id="<?=esc_attr($p['id'])?>"
+
+data-name="<?=esc_attr($p['name'])?>"
+
+data-cat="<?=esc_attr($p['cat'])?>"
+
+data-price="<?=$p['price']?>"
+
+data-old-price="<?=$p['oldPrice']?>"
+
+data-rating="<?=$p['rating']?>"
+
+data-sold="<?=$p['sold']?>"
+
+data-colors='<?=json_encode($p["colors"],JSON_UNESCAPED_UNICODE)?>'
+
+data-materials='<?=json_encode($p["materials"],JSON_UNESCAPED_UNICODE)?>'
+
+data-sizes='<?=json_encode($p["sizes"],JSON_UNESCAPED_UNICODE)?>'
+
+data-gallery='<?=json_encode($p["gallery"],JSON_UNESCAPED_SLASHES)?>'
+
+data-desc="<?=esc_attr($p['desc'])?>"
+
+data-link="<?=esc_url($p['link'])?>"
+
+data-stock="<?=$p['stock'] ? 1 : 0?>"
+
+data-review-count="<?=$p['reviewCount']?>"
+
+data-specs='<?=json_encode($p["specs"],JSON_UNESCAPED_UNICODE)?>'
+
+data-variations='<?=json_encode(
+$p["variations"],
+JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES
+)?>'
+
+>
+
+    <div class="p-img">
+
+        <img
+        src="<?=$p['img']?>"
+        alt="<?=esc_attr($p['name'])?>"
+        loading="lazy">
+
+        <?php if($discount): ?>
+
+        <span class="p-discount">
+
+            -<?=$discount?>%
+
+        </span>
+
+        <?php endif; ?>
+
+        <div class="p-icons">
+
+            <button
+            class="like-btn"
+            data-id="<?=$p['id']?>">
+
+                ❤️
+
+            </button>
+
+            <button
+            class="quick-btn"
+            data-id="<?=$p['id']?>">
+
+                👁
+
+            </button>
+
+            <!-- <button
+            class="cart-btn"
+            data-id="">
+
+                🛒
+
+            </button> -->
+
+        </div>
+
+    </div>
+
+    <div class="p-body">
+
+        <span class="p-cat">
+
+            <?=$p['cat']?>
+
+        </span>
+
+        <h3 class="p-name">
+
+            <?=$p['name']?>
+
+        </h3>
+
+        <div class="p-rating">
+
+<?php
+
+$star = round($p['rating']);
+
+echo str_repeat("★",$star);
+
+echo str_repeat("☆",5-$star);
+
+?>
+
+<span>
+
+(<?=$p['rating']?>)
+
+</span>
+
+        </div>
+
+        <div class="p-footer">
+
+            <div class="p-price-wrap">
+
+                <span class="p-price">
+
+                    <?=fmt_price($p['price'])?>
+
+                </span>
+
+                <?php if($p['oldPrice']): ?>
+
+                <span class="p-old-price">
+
+                    <?=fmt_price($p['oldPrice'])?>
+
+                </span>
+
+                <?php endif; ?>
+
+            </div>
+
+            <!-- <button
+            class="add-btn cart-btn"
+            data-id="">
+
+                +
+
+            </button> -->
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php endforeach; ?>
+
+</div>
+<?php if(empty($data_products)): ?>
+
+<div class="empty-state">
+
+Không có sản phẩm.
+
+</div>
+
+<?php endif; ?>
             <div class="load-more-wrap" id="loadMoreWrap" style="display: none">
               <button
                 class="btn btn-primary btn-ripple"

@@ -26,142 +26,61 @@ document.addEventListener("click", (e) => {
 });
 
 /* ================= DATA ================= */
-const CATEGORIES = ["Sofa", "Ghế", "Bàn", "Giường", "Tủ", "Đèn", "Decor"];
-const MATERIALS = ["Gỗ", "Kim loại", "Da", "Vải", "Kính"];
-const COLORS = [
-  { name: "Nâu gỗ", hex: "#8B6B4A" },
-  { name: "Vàng nhạt", hex: "#D8B98A" },
-  { name: "Đen", hex: "#1E1E1E" },
-  { name: "Kem", hex: "#F8F6F2" },
-  { name: "Xám", hex: "#9A9A94" },
-];
-const IMG_POOL = [
-  "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1543198126-cdcb62dc4e00?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1550254478-ead40cc54513?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=600&h=700&q=80",
-  "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=600&h=700&q=80",
-];
-const RAW = [
-  ["Sofa Milan Premium", "Sofa"],
-  ["Sofa Nordic", "Sofa"],
-  ["Sofa Osaka", "Sofa"],
-  ["Sofa Verona", "Sofa"],
-  ["Ghế Lounge Aura", "Ghế"],
-  ["Ghế Accent Milan", "Ghế"],
-  ["Ghế Dining Nordic", "Ghế"],
-  ["Bàn trà Tokyo", "Bàn"],
-  ["Bàn ăn Osaka", "Bàn"],
-  ["Bàn Console Kyoto", "Bàn"],
-  ["Kệ sách Scandinavian", "Tủ"],
-  ["Tủ TV Premium", "Tủ"],
-  ["Tủ quần áo Modern", "Tủ"],
-  ["Giường Queen Aura", "Giường"],
-  ["Giường King Premium", "Giường"],
-  ["Đèn Aurora", "Đèn"],
-  ["Đèn Luna", "Đèn"],
-  ["Thảm Linen", "Decor"],
-  ["Gương Decor", "Decor"],
-  ["Tủ đầu giường Oak", "Tủ"],
-  ["Ghế Bar Nordic", "Ghế"],
-  ["Kệ treo tường", "Tủ"],
-  ["Bàn làm việc Studio", "Bàn"],
-  ["Ghế công thái học", "Ghế"],
-];
-function seededRand(seed) {
-  const x = Math.sin(seed * 999) * 10000;
-  return x - Math.floor(x);
-}
-const REVIEWERS = [
-  {
-    name: "Nguyễn Thu Hà",
-    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&q=80",
-  },
-  {
-    name: "Trần Minh Khôi",
-    img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=120&h=120&q=80",
-  },
-  {
-    name: "Lê Phương Anh",
-    img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&q=80",
-  },
-];
-const REVIEW_PHOTOS = [
-  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=600&q=80",
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&h=600&q=80",
-];
+const fmt = (n) => n.toLocaleString("vi-VN") + "₫";
 
-const PRODUCTS = RAW.map((r, i) => {
-  const rnd = seededRand(i + 1),
-    rnd2 = seededRand(i + 50),
-    rnd3 = seededRand(i + 120);
-  const price = Math.round(((1.5 + rnd * 17) * 1000000) / 100000) * 100000;
-  const hasDiscount = rnd2 > 0.55;
-  const oldPrice = hasDiscount
-    ? Math.round((price * (1.15 + rnd3 * 0.25)) / 100000) * 100000
-    : null;
-  const rating = Math.round((3.6 + rnd * 1.4) * 10) / 10;
-  const sold = Math.round(40 + rnd2 * 1800);
-  const colors = COLORS.filter((c, ci) => seededRand(i * 7 + ci) > 0.45).map(
-    (c) => c.hex,
-  );
-  const materials = MATERIALS.filter((m, mi) => seededRand(i * 13 + mi) > 0.6);
-  const img = IMG_POOL[i % IMG_POOL.length];
-  const gallery = [0, 1, 2, 3, 4].map(
-    (g) => IMG_POOL[(i + g + 1) % IMG_POOL.length],
-  );
+const COLORS = {
+  "Nâu gỗ": "#8B6B4A",
+  "Vàng nhạt": "#D8B98A",
+  Đen: "#1E1E1E",
+  Kem: "#F8F6F2",
+  Xám: "#9A9A94",
+};
+
+const PRODUCTS = [...document.querySelectorAll(".p-card")].map((card) => {
   return {
-    id: i + 1,
-    name: r[0],
-    cat: r[1],
-    price,
-    oldPrice,
-    rating,
-    sold,
-    colors: colors.length ? colors : [COLORS[0].hex],
-    materials: materials.length ? materials : [MATERIALS[0]],
-    sizes: ["S", "M", "L"],
-    img,
-    gallery,
-    desc: `${r[0]} được chế tác từ chất liệu cao cấp, thiết kế tối giản theo phong cách Modern Luxury — mang đến sự sang trọng tinh tế cho không gian sống của bạn. Sản phẩm được hoàn thiện thủ công tỉ mỉ, đảm bảo độ bền và tính thẩm mỹ lâu dài.`,
-    specs: {
-      "Chiều cao": `${70 + Math.round(rnd * 60)} cm`,
-      "Chiều rộng": `${80 + Math.round(rnd2 * 120)} cm`,
-      "Chất liệu": materials[0] || MATERIALS[0],
-      Màu: "Theo lựa chọn",
-      "Bảo hành": "24 tháng",
-      "Khối lượng": `${8 + Math.round(rnd3 * 40)} kg`,
-    },
-    reviews: [
-      {
-        ...REVIEWERS[i % 3],
-        stars: 5,
-        text: "Sản phẩm đẹp hơn mong đợi, đóng gói cẩn thận, giao hàng đúng hẹn. Rất hài lòng!",
-        photo: i % 2 === 0 ? REVIEW_PHOTOS[0] : null,
-      },
-      {
-        ...REVIEWERS[(i + 1) % 3],
-        stars: 4,
-        text: "Chất lượng tốt, đúng như mô tả. Sẽ ủng hộ shop lần sau.",
-        photo: null,
-      },
-      {
-        ...REVIEWERS[(i + 2) % 3],
-        stars: 5,
-        text: "Nhân viên tư vấn nhiệt tình, sản phẩm chắc chắn, hoàn thiện tinh xảo.",
-        photo: i % 3 === 0 ? REVIEW_PHOTOS[1] : null,
-      },
-    ],
+    element: card,
+
+    id: Number(card.dataset.id),
+
+    name: card.dataset.name,
+
+    cat: card.dataset.cat,
+
+    price: Number(card.dataset.price),
+
+    oldPrice: card.dataset.oldPrice ? Number(card.dataset.oldPrice) : null,
+
+    rating: Number(card.dataset.rating),
+
+    sold: Number(card.dataset.sold),
+
+    colors: JSON.parse(card.dataset.colors).map((c) => COLORS[c] || c),
+
+    materials: JSON.parse(card.dataset.materials),
+
+    sizes: JSON.parse(card.dataset.sizes),
+
+    gallery: JSON.parse(card.dataset.gallery),
+
+    desc: card.dataset.desc,
+
+    img: card.querySelector("img").src,
+
+    specs: JSON.parse(card.dataset.specs),
+
+    link: card.dataset.link,
+
+    stock: Number(card.dataset.stock),
+
+    reviewCount: Number(card.dataset.reviewCount),
+
+    reviews: [],
+
+    variations: JSON.parse(card.dataset.variations),
   };
 });
-const fmt = (n) => n.toLocaleString("vi-VN") + "₫";
+
+// console.log(PRODUCTS);
 
 /* ================= STATE ================= */
 let state = {
@@ -181,6 +100,9 @@ let likedIds = new Set();
 
 /* ================= BUILD SIDEBAR ================= */
 const catFilters = document.getElementById("catFilters");
+const CATEGORIES = [...new Set(PRODUCTS.map((p) => p.cat))];
+const MATERIALS = [...new Set(PRODUCTS.flatMap((p) => p.materials))];
+
 CATEGORIES.forEach((c) => {
   const cnt = PRODUCTS.filter((p) => p.cat === c).length;
   const label = document.createElement("label");
@@ -204,17 +126,24 @@ MATERIALS.forEach((m) => {
   matFilters.appendChild(label);
 });
 const colorFilters = document.getElementById("colorFilters");
-COLORS.forEach((c) => {
+Object.entries(COLORS).forEach(([name, hex]) => {
   const dot = document.createElement("div");
+
   dot.className = "color-dot";
-  dot.style.background = c.hex;
-  dot.title = c.name;
-  if (c.hex === "#F8F6F2") dot.style.boxShadow = "inset 0 0 0 1px #e2ddd0";
+
+  dot.style.background = hex;
+
+  dot.title = name;
+
+  if (hex == "#F8F6F2") dot.style.boxShadow = "inset 0 0 0 1px #ddd";
+
   dot.addEventListener("click", () => {
     dot.classList.toggle("selected");
-    if (dot.classList.contains("selected")) state.colors.push(c.hex);
-    else state.colors = state.colors.filter((x) => x !== c.hex);
+
+    if (dot.classList.contains("selected")) state.colors.push(hex);
+    else state.colors = state.colors.filter((x) => x != hex);
   });
+
   colorFilters.appendChild(dot);
 });
 const ratingFilters = document.getElementById("ratingFilters");
@@ -316,6 +245,105 @@ function showSkeleton(n = 6) {
     .join("");
 }
 
+function bindCardEvents() {
+  productGrid.onclick = (e) => {
+    const card = e.target.closest(".p-card");
+    if (!card) return;
+
+    const id = Number(card.dataset.id);
+
+    // Like
+    const likeBtn = e.target.closest(".like-btn");
+    if (likeBtn) {
+      if (likedIds.has(id)) likedIds.delete(id);
+      else likedIds.add(id);
+
+      likeBtn.classList.toggle("liked");
+
+      const svg = likeBtn.querySelector("svg");
+      if (svg) {
+        svg.setAttribute("fill", likedIds.has(id) ? "currentColor" : "none");
+      }
+
+      likeBtn.classList.add("heart-pop");
+
+      setTimeout(() => {
+        likeBtn.classList.remove("heart-pop");
+      }, 400);
+
+      return;
+    }
+
+    // Cart
+    const cartBtn = e.target.closest(".cart-btn");
+    if (cartBtn) {
+      const p = PRODUCTS.find((x) => x.id === id);
+      if (!p) return;
+
+      const variation = p.variations.find(
+        (v) =>
+          v.attributes.color === activeColor &&
+          v.attributes.size === activeSize,
+      );
+
+      if (!variation) {
+        showToast("Vui lòng chọn biến thể");
+        return;
+      }
+
+      fetch("/wp-NoiThat/?wc-ajax=add_to_cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          product_id: p.id,
+
+          variation_id: variation.id,
+
+          quantity: activeQty,
+
+          attribute_pa_color: variation.attributes.color,
+
+          attribute_pa_size: variation.attributes.size,
+
+          attribute_pa_material: variation.attributes.material,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            window.location = data.product_url;
+            return;
+          }
+
+          cartBtn.classList.add("cart-bounce");
+
+          setTimeout(() => {
+            cartBtn.classList.remove("cart-bounce");
+          }, 500);
+
+          showToast(`Đã thêm "${p.name}" vào giỏ hàng`);
+
+          // cập nhật số lượng trên icon giỏ (nếu có)
+          document.body.dispatchEvent(new Event("wc_fragment_refresh"));
+        });
+      return;
+    }
+
+    // Quick View
+    if (e.target.closest(".quick-btn")) {
+      selectProduct(id);
+      return;
+    }
+
+    // Click Card
+    if (!e.target.closest("button")) {
+      selectProduct(id);
+    }
+  };
+}
+
 function renderGrid() {
   const list = getFiltered();
   resultCount.textContent = list.length;
@@ -327,7 +355,12 @@ function renderGrid() {
     return;
   }
   const shown = list.slice(0, state.visibleCount);
-  productGrid.innerHTML = shown.map((p) => cardHTML(p)).join("");
+  productGrid.innerHTML = "";
+
+  shown.forEach((p) => {
+    productGrid.appendChild(p.element);
+  });
+  bindCardEvents();
   requestAnimationFrame(() => {
     document
       .querySelectorAll(".p-card")
@@ -335,77 +368,11 @@ function renderGrid() {
   });
   loadMoreWrap.style.display =
     list.length > state.visibleCount ? "block" : "none";
-  bindCardEvents();
+  // bindCardEvents();
 }
-
-function cardHTML(p) {
-  const discount = p.oldPrice
-    ? Math.round((1 - p.price / p.oldPrice) * 100)
-    : 0;
-  return `<div class="p-card ${state.selectedId === p.id ? "active" : ""}" data-id="${p.id}">
-    <div class="p-img">
-      <img src="${p.img}" alt="${p.name}" loading="lazy">
-      ${discount > 0 ? `<span class="p-discount">-${discount}%</span>` : ""}
-      <div class="p-icons">
-        <button class="like-btn ${likedIds.has(p.id) ? "liked" : ""}" data-id="${p.id}" aria-label="Yêu thích" title="Yêu thích">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="${likedIds.has(p.id) ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>
-        </button>
-        <button class="quick-btn" data-id="${p.id}" aria-label="Xem nhanh" title="Xem nhanh"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        <button class="cart-btn" data-id="${p.id}" aria-label="Thêm giỏ hàng" title="Thêm giỏ hàng"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg></button>
-      </div>
-    </div>
-    <div class="p-body">
-      <span class="p-cat">${p.cat}</span>
-      <h3 class="p-name">${p.name}</h3>
-      <div class="p-rating">${"★".repeat(Math.round(p.rating))}${"☆".repeat(5 - Math.round(p.rating))}<span>(${p.rating})</span></div>
-      <div class="p-footer">
-        <div class="p-price-wrap"><span class="p-price">${fmt(p.price)}</span>${p.oldPrice ? `<span class="p-old-price">${fmt(p.oldPrice)}</span>` : ""}</div>
-        <button class="add-btn cart-btn" data-id="${p.id}" aria-label="Thêm giỏ hàng"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function bindCardEvents() {
-  document.querySelectorAll(".p-card").forEach((card) => {
-    card.addEventListener("click", (e) => {
-      if (e.target.closest("button")) return;
-      selectProduct(+card.dataset.id);
-    });
-  });
-  document.querySelectorAll(".quick-btn").forEach((b) =>
-    b.addEventListener("click", (e) => {
-      e.stopPropagation();
-      selectProduct(+b.dataset.id);
-    }),
-  );
-  document.querySelectorAll(".like-btn").forEach((b) =>
-    b.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const id = +b.dataset.id;
-      if (likedIds.has(id)) likedIds.delete(id);
-      else likedIds.add(id);
-      b.classList.toggle("liked");
-      b.classList.add("heart-pop");
-      b.querySelector("svg").setAttribute(
-        "fill",
-        likedIds.has(id) ? "currentColor" : "none",
-      );
-      setTimeout(() => b.classList.remove("heart-pop"), 400);
-    }),
-  );
-  document.querySelectorAll(".cart-btn").forEach((b) =>
-    b.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const id = +b.dataset.id;
-      const p = PRODUCTS.find((x) => x.id === id);
-      b.classList.add("cart-bounce");
-      setTimeout(() => b.classList.remove("cart-bounce"), 500);
-      showToast(`Đã thêm "${p.name}" vào giỏ hàng`);
-    }),
-  );
-}
-
+// document
+// .querySelectorAll(".p-card")
+// .forEach(...);
 /* ================= TOAST ================= */
 function showToast(msg) {
   const wrap = document.getElementById("toastWrap");
@@ -534,6 +501,17 @@ function bindDetailEvents(root, p) {
         .querySelectorAll(".opt-color")
         .forEach((x) => x.classList.remove("sel"));
       el.classList.add("sel");
+      activeColor = el.dataset.color;
+
+      const variation = p.variations.find(
+        (v) =>
+          v.attributes.color === activeColor &&
+          v.attributes.size === activeSize,
+      );
+
+      if (variation) {
+        document.querySelector("#detailMainImg").src = variation.image;
+      }
     }),
   );
   root.querySelectorAll(".opt-size").forEach((el) =>
@@ -542,6 +520,17 @@ function bindDetailEvents(root, p) {
         .querySelectorAll(".opt-size")
         .forEach((x) => x.classList.remove("sel"));
       el.classList.add("sel");
+      activeSize = el.dataset.size;
+
+      const variation = p.variations.find(
+        (v) =>
+          v.attributes.color === activeColor &&
+          v.attributes.size === activeSize,
+      );
+
+      if (variation) {
+        document.querySelector("#detailMainImg").src = variation.image;
+      }
     }),
   );
   const qtyVal = root.querySelector("#qtyVal");

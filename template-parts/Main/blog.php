@@ -1,24 +1,84 @@
 <!-- SECTION 8: BLOG -->
 <section class="blog" id="blog">
-  <div class="container">
-    <div class="sec-head" data-aos="fade-up">
-      <span class="eyebrow">Blog</span>
-      <h2>Cảm hứng & xu hướng</h2>
-      <p>Câu chuyện về nội thất, phong cách sống và không gian.</p>
+  <div class="blog-grid">
+
+<?php
+
+$query = new WP_Query(array(
+
+    'post_type' => 'post',
+
+    'posts_per_page' => 3,
+
+    'post_status' => 'publish'
+
+));
+
+if($query->have_posts()) :
+
+while($query->have_posts()) :
+
+$query->the_post();
+
+?>
+
+<div class="blog-card">
+
+    <div class="blog-img">
+
+        <a href="<?php the_permalink(); ?>">
+
+            <?php the_post_thumbnail('large'); ?>
+
+        </a>
+
     </div>
-    <div class="blog-grid">
-      <div class="blog-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="blog-img"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=600&q=80" alt=""></div>
-        <div class="blog-body"><span class="blog-date">12 Tháng 6, 2026</span><h3>5 xu hướng nội thất lên ngôi năm 2026</h3><p>Từ gam màu đất đến chất liệu tái chế, cùng khám phá những gì đang định hình không gian sống hiện đại.</p><a class="blog-read" href="#">Đọc thêm →</a></div>
-      </div>
-      <div class="blog-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="blog-img"><img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900&h=600&q=80" alt=""></div>
-        <div class="blog-body"><span class="blog-date">28 Tháng 5, 2026</span><h3>Bí quyết chọn sofa cho phòng khách nhỏ</h3><p>Kích thước, chất liệu và bố cục — những yếu tố then chốt để tối ưu không gian sống.</p><a class="blog-read" href="#">Đọc thêm →</a></div>
-      </div>
-      <div class="blog-card" data-aos="fade-up" data-aos-delay="240">
-        <div class="blog-img"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&h=600&q=80" alt=""></div>
-        <div class="blog-body"><span class="blog-date">15 Tháng 5, 2026</span><h3>Gỗ tự nhiên và câu chuyện bền vững</h3><p>Vì sao lựa chọn nội thất gỗ tự nhiên là một quyết định thân thiện với môi trường.</p><a class="blog-read" href="#">Đọc thêm →</a></div>
-      </div>
+
+    <div class="blog-body">
+
+        <span class="blog-date">
+
+            <?php echo get_the_date('d/m/Y'); ?>
+
+        </span>
+
+        <h3>
+
+            <a href="<?php the_permalink(); ?>">
+
+                <?php the_title(); ?>
+
+            </a>
+
+        </h3>
+
+        <p>
+
+            <?php echo wp_trim_words(get_the_excerpt(),20); ?>
+
+        </p>
+
+        <a
+        href="<?php the_permalink(); ?>"
+        class="blog-read">
+
+            Đọc tiếp →
+
+        </a>
+
     </div>
-  </div>
+
+</div>
+
+<?php
+
+endwhile;
+
+wp_reset_postdata();
+
+endif;
+
+?>
+
+</div>
 </section>

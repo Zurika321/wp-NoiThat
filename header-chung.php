@@ -53,7 +53,7 @@ if (!is_front_page()) {
     </a>
 
     <a href="<?php echo home_url('/blog'); ?>"
-       class="nav-link <?php echo is_home() || is_single() ? 'active' : ''; ?>">
+       class="nav-link <?php echo is_page('blog') ? 'active' : ''; ?>">
         Blog
     </a>
 

@@ -1,5 +1,5 @@
 <?php
-get_header();
+get_header("chung");
 
 while(have_posts()) :
     the_post();

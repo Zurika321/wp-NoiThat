@@ -34,126 +34,49 @@ function showToast(msg) {
 }
 
 /* ================= DATA ================= */
-const CATEGORIES = [
-  { id: 0, name: "Tất cả" },
-  { id: 1, name: "Xu hướng" },
-  { id: 2, name: "Phòng khách" },
-  { id: 3, name: "Phòng ngủ" },
-  { id: 4, name: "Nhà bếp" },
-  { id: 5, name: "Decor" },
-  { id: 6, name: "Mẹo hay" },
-  { id: 7, name: "Dự án" },
-  { id: 8, name: "Khuyến mãi" },
-];
-const IMG_POOL = [
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1618220179428-22790b461013?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1615529182904-14819c35db37?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=900&h=600&q=80",
-  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&h=600&q=80",
-];
-const TITLES = [
-  ["10 xu hướng nội thất nổi bật năm 2026", 1, true],
-  ["Bí quyết lựa chọn sofa cho phòng khách nhỏ", 2, false],
-  ["5 mẫu giường ngủ tối giản được yêu thích", 3, false],
-  ["Bố trí nhà bếp nhỏ gọn, tiện nghi", 4, false],
-  ["Cách phối màu decor theo phong cách Nordic", 5, false],
-  ["7 mẹo giữ nhà gọn gàng quanh năm", 6, false],
-  ["Dự án cải tạo căn hộ 60m² tại Hà Nội", 7, false],
-  ["Ưu đãi mùa hè: Giảm đến 30% bộ sưu tập Nordic", 8, false],
-  ["Chất liệu gỗ nào phù hợp với khí hậu Việt Nam?", 1, false],
-  ["Phối hợp sofa da và sofa vải trong cùng không gian", 2, false],
-  ["Ánh sáng lý tưởng cho phòng ngủ thư giãn", 3, false],
-  ["Xu hướng tủ bếp chữ L cho căn hộ hiện đại", 4, false],
-  ["Trang trí phòng khách với cây xanh", 5, false],
-  ["Cách vệ sinh và bảo quản đồ nội thất gỗ", 6, false],
-  ["Dự án biệt thự phong cách Indochine", 7, false],
-  ["Flash sale cuối tuần: Sofa giảm giá sốc", 8, false],
-  ["Phong cách Japandi lên ngôi năm 2026", 1, true],
-  ["Bố trí phòng khách theo phong thủy", 2, false],
-  ["Chọn nệm phù hợp với dáng ngủ của bạn", 3, false],
-  ["Bàn đảo bếp — xu hướng không thể bỏ lỡ", 4, false],
-  ["Gương trang trí: điểm nhấn cho mọi không gian", 5, false],
-  ["Bí quyết tận dụng ánh sáng tự nhiên", 6, false],
-  ["Dự án văn phòng xanh tại TP.HCM", 7, true],
-  ["Những sai lầm khi bố trí nội thất", 6, false],
-];
-function seededRand(seed) {
-  const x = Math.sin(seed * 999) * 10000;
-  return x - Math.floor(x);
-}
-const dates = [
-  "2026-07-20",
-  "2026-07-18",
-  "2026-07-15",
-  "2026-07-12",
-  "2026-07-10",
-  "2026-07-08",
-  "2026-07-05",
-  "2026-07-02",
-  "2026-06-29",
-  "2026-06-27",
-  "2026-06-24",
-  "2026-06-21",
-  "2026-06-19",
-  "2026-06-17",
-  "2026-06-15",
-  "2026-06-13",
-  "2026-06-11",
-  "2026-06-09",
-  "2026-06-07",
-  "2026-06-05",
-  "2026-06-03",
-  "2026-06-01",
-  "2026-05-28",
-  "2026-06-11",
-];
-const POSTS = TITLES.map((t, i) => {
-  const rnd = seededRand(i + 1);
-  return {
-    id: i + 1,
-    title: t[0],
-    cat: t[1],
-    featured: t[2],
-    img: IMG_POOL[i % IMG_POOL.length],
-    date: dates[i],
-    views: Math.round(700 + rnd * 3400),
-    readTime: 3 + Math.round(rnd * 5) + " phút",
-    desc: "Khám phá những gợi ý thiết thực và cảm hứng thiết kế được MỘC chọn lọc, giúp không gian sống của bạn trở nên tinh tế và ấm cúng hơn mỗi ngày.",
-  };
-});
-const catName = (id) => CATEGORIES.find((c) => c.id === id)?.name || "";
+const POSTS = wpPosts;
 function fmtDate(d) {
   const [y, m, day] = d.split("-");
   return `${day} Th${+m}, ${y}`;
 }
 
 /* ================= STATE ================= */
-let state = { search: "", cat: 0, sort: "newest", page: 1 };
+let state = {
+  search: "",
+  cat: "Tất cả",
+  sort: "newest",
+  page: 1,
+};
 
 /* category pills */
 const catPills = document.getElementById("catPills");
-CATEGORIES.forEach((c) => {
-  const b = document.createElement("button");
-  b.className = "pill-btn" + (c.id === 0 ? " active" : "");
-  b.textContent = c.name;
-  b.addEventListener("click", () => {
+
+const categories = ["Tất cả", ...new Set(POSTS.map((post) => post.category))];
+
+categories.forEach((category) => {
+  const button = document.createElement("button");
+
+  button.className = "pill-btn";
+
+  if (category === "Tất cả") button.classList.add("active");
+
+  button.textContent = category;
+
+  button.addEventListener("click", () => {
     document
       .querySelectorAll(".pill-btn")
-      .forEach((p) => p.classList.remove("active"));
-    b.classList.add("active");
-    state.cat = c.id;
+      .forEach((btn) => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    state.cat = category;
+
     state.page = 1;
+
     applyFilters();
   });
-  catPills.appendChild(b);
+
+  catPills.appendChild(button);
 });
 
 /* toolbar */
@@ -194,27 +117,37 @@ function getFiltered() {
     if (
       state.search &&
       !p.title.toLowerCase().includes(state.search.toLowerCase())
-    )
+    ) {
       return false;
-    if (state.cat && p.cat !== state.cat) return false;
+    }
+
+    if (state.cat !== "Tất cả" && p.category !== state.cat) {
+      return false;
+    }
+
     return true;
   });
+
   switch (state.sort) {
     case "oldest":
       list.sort((a, b) => new Date(a.date) - new Date(b.date));
       break;
+
     case "featured":
-      list.sort((a, b) => b.featured - a.featured);
+      list.sort((a, b) => (b.featured || 0) - (a.featured || 0));
       break;
+
     case "views":
-      list.sort((a, b) => b.views - a.views);
+      list.sort((a, b) => (b.views || 0) - (a.views || 0));
       break;
+
     default:
       list.sort((a, b) => new Date(b.date) - new Date(a.date));
+      break;
   }
+
   return list;
 }
-
 const postGrid = document.getElementById("postGrid");
 const resultCount = document.getElementById("resultCount");
 const pagination = document.getElementById("pagination");
@@ -254,16 +187,55 @@ function renderPosts() {
   renderPagination(totalPages);
 }
 
-function postCardHTML(p) {
-  return `<a class="post-card" href="#">
-    <div class="post-img"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
-    <div class="post-body">
-      <div class="post-meta"><span>${catName(p.cat)}</span><span class="dot">•</span><span class="date">${fmtDate(p.date)}</span></div>
-      <h3 class="post-title">${p.title}</h3>
-      <p class="post-desc">${p.desc}</p>
-      <span class="post-read">Đọc tiếp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </div>
-  </a>`;
+function postCardHTML(post) {
+  return `
+
+<a class="post-card" href="${post.link}">
+
+<div class="post-img">
+
+<img
+src="${post.thumbnail}"
+alt="${post.title}"
+loading="lazy">
+
+</div>
+
+<div class="post-body">
+
+<div class="post-meta">
+
+<span>${post.category}</span>
+
+<span class="dot">•</span>
+
+<span>${fmtDate(post.date)}</span>
+
+</div>
+
+<h3 class="post-title">
+
+${post.title}
+
+</h3>
+
+<p class="post-desc">
+
+${post.excerpt}
+
+</p>
+
+<span class="post-read">
+
+Đọc tiếp →
+
+</span>
+
+</div>
+
+</a>
+
+`;
 }
 
 function renderPagination(totalPages) {
@@ -326,7 +298,7 @@ function renderSidebar() {
     arr
       .map(
         (p, i) =>
-          `<div class="side-post"><span class="num">0${i + 1}</span><img src="${p.img}" alt=""><div><h5>${p.title}</h5><span>${p.views.toLocaleString("vi-VN")} lượt xem</span></div></div>`,
+          `<div class="side-post"><span class="num">0${i + 1}</span><img src="${p.thumbnail}"><div><h5>${p.title}</h5><span>${fmtDate(p.date)}</span></div></div>`,
       )
       .join("");
   document.getElementById("trendingList").innerHTML = build(trending);
@@ -339,14 +311,14 @@ renderSidebar();
 
 /* ================= INSTAGRAM GALLERY ================= */
 const instaGrid = document.getElementById("instaGrid");
-IMG_POOL.slice(0, 6).forEach((src, i) => {
-  const item = document.createElement("div");
-  item.className = "insta-item";
-  item.setAttribute("data-aos", "zoom-in");
-  item.setAttribute("data-aos-delay", i * 60);
-  item.innerHTML = `<img src="${src.replace("w=900&h=600", "w=800&h=800")}" alt="Instagram ${i + 1}" loading="lazy"><div class="insta-overlay"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></div>`;
-  instaGrid.appendChild(item);
-});
+// IMG_POOL.slice(0, 6).forEach((src, i) => {
+//   const item = document.createElement("div");
+//   item.className = "insta-item";
+//   item.setAttribute("data-aos", "zoom-in");
+//   item.setAttribute("data-aos-delay", i * 60);
+//   item.innerHTML = `<img src="${src.replace("w=900&h=600", "w=800&h=800")}" alt="Instagram ${i + 1}" loading="lazy"><div class="insta-overlay"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></div>`;
+//   instaGrid.appendChild(item);
+// });
 
 /* ================= NEWSLETTER ================= */
 const nlForm = document.getElementById("nlForm");

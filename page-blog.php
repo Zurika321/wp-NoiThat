@@ -1,6 +1,57 @@
 <body>
    <?php get_header('chung'); ?>
+<?php
 
+$args = array(
+    'post_type'      => 'post',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish'
+);
+
+$query = new WP_Query($args);
+
+$blog_posts = [];
+
+if($query->have_posts()) :
+
+    while($query->have_posts()) :
+
+        $query->the_post();
+
+        $blog_posts[] = array(
+
+            'id' => get_the_ID(),
+
+            'title' => get_the_title(),
+
+            'excerpt' => get_the_excerpt(),
+
+            'date' => get_the_date('Y-m-d'),
+
+            'author' => get_the_author(),
+
+            'link' => get_permalink(),
+
+            'thumbnail' => get_the_post_thumbnail_url(
+                get_the_ID(),
+                'large'
+            ),
+
+            'category' => get_the_category()
+                ? get_the_category()[0]->name
+                : 'Chưa phân loại'
+
+        );
+
+    endwhile;
+
+endif;
+
+wp_reset_postdata();
+$featured_post = !empty($blog_posts) ? $blog_posts[0] : null;
+?>
+
+?>
 <!-- HERO -->
     <section class="hero">
       <div
@@ -33,37 +84,61 @@
     <!-- SECTION 1: FEATURED ARTICLE -->
     <section class="featured" id="featured">
       <div class="container">
-        <div class="featured-card">
-          <div class="featured-img" data-aos="fade-right">
-            <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&h=900&q=80"
-              alt="Featured"
-            />
-          </div>
-          <div class="featured-body" data-aos="fade-left">
-            <div class="f-meta">
-              <span class="pill">Xu hướng</span><span>20 Th7, 2026</span
-              ><span>·</span><span>6 phút đọc</span>
-            </div>
-            <h2>10 xu hướng nội thất nổi bật năm 2026</h2>
-            <p>
-              Từ gam màu đất mộc mạc đến chất liệu tái chế thân thiện môi trường
-              — khám phá những xu hướng đang định hình không gian sống hiện đại
-              năm nay, cùng gợi ý ứng dụng thực tế cho từng phong cách nhà ở.
-            </p>
-            <a
-              href="#"
-              class="btn btn-primary btn-ripple"
-              style="
-                background: var(--wood);
-                color: var(--white);
-                width: fit-content;
-              "
-              >Đọc bài viết</a
-            >
-          </div>
-        </div>
-      </div>
+
+<?php if($featured_post): ?>
+
+<div class="featured-card">
+
+<div class="featured-img">
+
+<img
+src="<?php echo esc_url($featured_post['thumbnail']); ?>"
+alt="<?php echo esc_attr($featured_post['title']); ?>"
+>
+
+</div>
+
+<div class="featured-body">
+
+<div class="f-meta">
+
+<span class="pill">
+<?php echo esc_html($featured_post['category']); ?>
+</span>
+
+<span>
+<?php echo esc_html($featured_post['date']); ?>
+</span>
+
+</div>
+
+<h2>
+
+<?php echo esc_html($featured_post['title']); ?>
+
+</h2>
+
+<p>
+
+<?php echo esc_html($featured_post['excerpt']); ?>
+
+</p>
+
+<a
+href="<?php echo esc_url($featured_post['link']); ?>"
+class="btn btn-primary btn-ripple">
+
+Đọc bài viết
+
+</a>
+
+</div>
+
+</div>
+
+<?php endif; ?>
+
+</div>
     </section>
 
     <!-- TOOLBAR -->
@@ -285,4 +360,15 @@
 
     <div id="toastWrap"></div>
     
+//
+<script>
+
+const wpPosts = <?php
+echo json_encode(
+    $blog_posts,
+    JSON_UNESCAPED_UNICODE
+);
+?>;
+
+</script>
    <?php get_footer(); ?>
