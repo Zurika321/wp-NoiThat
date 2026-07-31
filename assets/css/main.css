@@ -301,11 +301,11 @@ footer ul li a:hover {
 /* ============ NAVBAR ============ */
 header.navbar {
   position: fixed;
-  top: 16;
+  top: 12;
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 26px 0;
+  padding: 20px 0;
   transition:
     background 0.35s var(--ease),
     padding 0.35s var(--ease),

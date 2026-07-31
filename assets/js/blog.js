@@ -1,9 +1,3 @@
-AOS.init({
-  duration: 800,
-  easing: "ease-out-cubic",
-  once: true,
-  offset: 40,
-});
 document
   .getElementById("navToggle")
   .addEventListener("click", () =>
@@ -40,10 +34,11 @@ function fmtDate(d) {
   return `${day} Th${+m}, ${y}`;
 }
 
-/* ================= STATE ================= */
-let state = {
+/* ================= state_blog ================= */
+let state_blog = {
   search: "",
   cat: "Tất cả",
+  tag: "Tất cả",
   sort: "newest",
   page: 1,
 };
@@ -69,14 +64,30 @@ categories.forEach((category) => {
 
     button.classList.add("active");
 
-    state.cat = category;
+    state_blog.cat = category;
 
-    state.page = 1;
+    state_blog.page = 1;
 
     applyFilters();
   });
 
   catPills.appendChild(button);
+});
+/* tag filter */
+document.querySelectorAll(".tag-chip").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document
+      .querySelectorAll(".tag-chip")
+      .forEach((t) => t.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    state_blog.tag = btn.dataset.tag;
+
+    state_blog.page = 1;
+
+    applyFilters();
+  });
 });
 
 /* toolbar */
@@ -88,14 +99,14 @@ let searchDeb;
 searchInput.addEventListener("input", (e) => {
   clearTimeout(searchDeb);
   searchDeb = setTimeout(() => {
-    state.search = e.target.value;
-    state.page = 1;
+    state_blog.search = e.target.value;
+    state_blog.page = 1;
     applyFilters();
   }, 250);
 });
 document.getElementById("sortSelect").addEventListener("change", (e) => {
-  state.sort = e.target.value;
-  state.page = 1;
+  state_blog.sort = e.target.value;
+  state_blog.page = 1;
   applyFilters();
 });
 window.addEventListener("scroll", () =>
@@ -106,29 +117,30 @@ window.addEventListener("scroll", () =>
 
 /* items per page by breakpoint */
 function itemsPerPage() {
-  const w = window.innerWidth;
-  if (w >= 1280) return 9;
-  if (w >= 768) return 6;
   return 4;
 }
 
 function getFiltered() {
   let list = POSTS.filter((p) => {
     if (
-      state.search &&
-      !p.title.toLowerCase().includes(state.search.toLowerCase())
+      state_blog.search &&
+      !p.title.toLowerCase().includes(state_blog.search.toLowerCase())
     ) {
       return false;
     }
 
-    if (state.cat !== "Tất cả" && p.category !== state.cat) {
+    if (state_blog.cat !== "Tất cả" && p.category !== state_blog.cat) {
+      return false;
+    }
+
+    if (state_blog.tag !== "Tất cả" && !p.tags.includes(state_blog.tag)) {
       return false;
     }
 
     return true;
   });
 
-  switch (state.sort) {
+  switch (state_blog.sort) {
     case "oldest":
       list.sort((a, b) => new Date(a.date) - new Date(b.date));
       break;
@@ -168,15 +180,15 @@ function renderPosts() {
   resultCount.textContent = list.length;
   const perPage = itemsPerPage();
   const totalPages = Math.max(1, Math.ceil(list.length / perPage));
-  if (state.page > totalPages) state.page = totalPages;
+  if (state_blog.page > totalPages) state_blog.page = totalPages;
   if (!list.length) {
-    postGrid.innerHTML = `<div class="empty-state">
+    postGrid.innerHTML = `<div class="empty-state_blog">
       <svg width="66" height="66" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M8 11h6"/></svg>
       <h4>Không tìm thấy bài viết</h4><p>Thử từ khóa hoặc danh mục khác.</p></div>`;
     pagination.innerHTML = "";
     return;
   }
-  const start = (state.page - 1) * perPage;
+  const start = (state_blog.page - 1) * perPage;
   const shown = list.slice(start, start + perPage);
   postGrid.innerHTML = shown.map((p) => postCardHTML(p)).join("");
   requestAnimationFrame(() =>
@@ -239,15 +251,15 @@ ${post.excerpt}
 }
 
 function renderPagination(totalPages) {
-  let html = `<button class="page-btn" id="prevPage" ${state.page === 1 ? "disabled" : ""}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>`;
+  let html = `<button class="page-btn" id="prevPage" ${state_blog.page === 1 ? "disabled" : ""}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>`;
   for (let i = 1; i <= totalPages; i++) {
-    html += `<button class="page-btn ${i === state.page ? "active" : ""}" data-page="${i}">${i}</button>`;
+    html += `<button class="page-btn ${i === state_blog.page ? "active" : ""}" data-page="${i}">${i}</button>`;
   }
-  html += `<button class="page-btn" id="nextPage" ${state.page === totalPages ? "disabled" : ""}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>`;
+  html += `<button class="page-btn" id="nextPage" ${state_blog.page === totalPages ? "disabled" : ""}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>`;
   pagination.innerHTML = html;
   pagination.querySelectorAll("[data-page]").forEach((b) =>
     b.addEventListener("click", () => {
-      state.page = +b.dataset.page;
+      state_blog.page = +b.dataset.page;
       renderPosts();
       window.scrollTo({
         top: document.getElementById("featured").offsetTop,
@@ -259,15 +271,15 @@ function renderPagination(totalPages) {
     next = document.getElementById("nextPage");
   if (prev)
     prev.addEventListener("click", () => {
-      if (state.page > 1) {
-        state.page--;
+      if (state_blog.page > 1) {
+        state_blog.page--;
         renderPosts();
       }
     });
   if (next)
     next.addEventListener("click", () => {
-      if (state.page < totalPages) {
-        state.page++;
+      if (state_blog.page < totalPages) {
+        state_blog.page++;
         renderPosts();
       }
     });
@@ -282,7 +294,7 @@ let bpDeb;
 window.addEventListener("resize", () => {
   clearTimeout(bpDeb);
   bpDeb = setTimeout(() => {
-    state.page = 1;
+    state_blog.page = 1;
     renderPosts();
   }, 250);
 });
@@ -290,23 +302,41 @@ window.addEventListener("resize", () => {
 /* ================= SIDEBAR ================= */
 function renderSidebar() {
   const trending = [...POSTS].sort((a, b) => b.views - a.views).slice(0, 4);
-  const featuredList = POSTS.filter((p) => p.featured).slice(0, 4);
+
+  const featured = POSTS.filter((p) => p.featured).slice(0, 4);
+
   const newest = [...POSTS]
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 4);
+
   const build = (arr) =>
     arr
       .map(
-        (p, i) =>
-          `<div class="side-post"><span class="num">0${i + 1}</span><img src="${p.thumbnail}"><div><h5>${p.title}</h5><span>${fmtDate(p.date)}</span></div></div>`,
+        (p, i) => `
+      <a class="side-post" href="${p.link}">
+          <span class="num">0${i + 1}</span>
+
+          <img src="${p.thumbnail}" alt="${p.title}">
+
+          <div>
+              <h5>${p.title}</h5>
+              <span>${fmtDate(p.date)}</span>
+          </div>
+
+      </a>
+    `,
       )
       .join("");
-  document.getElementById("trendingList").innerHTML = build(trending);
-  document.getElementById("featuredList").innerHTML = build(
-    featuredList.length ? featuredList : POSTS.slice(0, 4),
+
+  trendingList.innerHTML = build(trending);
+
+  featuredList.innerHTML = build(
+    featured.length ? featured : POSTS.slice(0, 4),
   );
-  document.getElementById("newestList").innerHTML = build(newest);
+
+  newestList.innerHTML = build(newest);
 }
+
 renderSidebar();
 
 /* ================= INSTAGRAM GALLERY ================= */

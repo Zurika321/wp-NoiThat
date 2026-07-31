@@ -13,7 +13,7 @@
     </nav>
     <?php if (is_user_logged_in()) : ?>
 
-    <a href="<?php echo home_url('/cart'); ?>" class="nav-cta btn-ripple">
+    <a href="<?php echo home_url('/gio-hang'); ?>" class="nav-cta btn-ripple">
         🛒 Giỏ hàng
     </a>
 

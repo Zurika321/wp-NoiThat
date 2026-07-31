@@ -65,7 +65,7 @@ if (!is_front_page()) {
 </nav>
     <?php if (is_user_logged_in()) : ?>
 
-    <a href="<?php echo home_url('/cart'); ?>" class="nav-cta btn-ripple <?php echo is_page('cart') ? 'active' : ''; ?>">
+    <a href="<?php echo home_url('/gio-hang'); ?>" class="nav-cta btn-ripple <?php echo is_page('gio-hang') ? 'active' : ''; ?>">
         🛒 Giỏ hàng
     </a>
 
@@ -96,7 +96,7 @@ if (!is_front_page()) {
 
 </header>
 
-<?php if (!is_page('products') && !is_page('about')) : ?>
+<?php if (is_page('gio-hang') || is_page('thanh-toan')) : ?>
 
 <div style="height:60px;background:black;"></div>
 <div style="height:20px;"></div>

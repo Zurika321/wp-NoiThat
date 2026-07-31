@@ -5,15 +5,35 @@ $products = wc_get_products([
     'limit'  => -1,
     'type'   => ['variable']
 ]);
+
 $data_products = [];
-
+    // Color HEX
+$COLORS_HEX = [
+    "Nâu gỗ" => "#8B6B4A",
+    "Vàng nhạt" => "#D8B98A",
+    "Đen" => "#1E1E1E",
+    "Kem" => "#F8F6F2",
+    "Xám" => "#9A9A94",
+];
 foreach ($products as $product) {
-
+//     foreach ($product->get_available_variations() as $v) {
+//     var_dump($v['attributes']);
+//     die();
+// }
+// foreach ($product->get_available_variations() as $v) {
+//     var_dump($v['variation_id']);
+//     var_dump($v['attributes']);
+// }
+// die();
     $attrs = $product->get_attributes();
 
     $colors = [];
     $sizes = [];
-    $materials = [];
+   $materials = wp_get_post_terms(
+    $product->get_id(),
+    'product_tag',
+    ['fields' => 'names']
+);
 
     $price = 0;
     $oldPrice = 0;
@@ -26,11 +46,6 @@ foreach ($products as $product) {
     // Size
     if (isset($attrs['size'])) {
         $sizes = $attrs['size']->get_options();
-    }
-
-    // Material
-    if (isset($attrs['material'])) {
-        $materials = $attrs['material']->get_options();
     }
 
     // Money
@@ -86,30 +101,43 @@ foreach ($products as $product) {
 
     $variations = [];
 
-    foreach ($product->get_available_variations() as $v){
+foreach ($product->get_available_variations() as $v) {
 
-        $variation = wc_get_product($v['variation_id']);
+    $variation = wc_get_product($v['variation_id']);
 
-        $variations[] = [
-            'id' => $variation->get_id(),
+    $variations[] = [
+        'id' => $variation->get_id(),
 
-            'price' => (float)$variation->get_price(),
+        'price' => (float) $variation->get_price(),
 
-            'regular_price' => (float)$variation->get_regular_price(),
+        'regular_price' => (float) $variation->get_regular_price(),
 
-            'stock' => $variation->is_in_stock(),
+        'stock' => $variation->is_in_stock(),
 
-            'image' => wp_get_attachment_url(
-                $variation->get_image_id()
-            ),
+        'image' => wp_get_attachment_url($variation->get_image_id()),
 
-            'attributes'=>[
-                'color'=>$v['attributes']['attribute_pa_color'] ?? '',
-                'size'=>$v['attributes']['attribute_pa_size'] ?? '',
-                'material'=>$v['attributes']['attribute_pa_material'] ?? '',
-            ]
-        ];
+        'attributes' => [
+    'color' => [
+        'name' => $v['attributes']['attribute_color'] ?? '',
+        'slug' => sanitize_title($v['attributes']['attribute_color'] ?? ''),
+        'hex'  => $COLORS_HEX[$v['attributes']['attribute_color'] ?? ''] ?? ''
+    ],
+
+    'size' => [
+        'name' => $v['attributes']['attribute_size'] ?? '',
+        'slug' => sanitize_title($v['attributes']['attribute_size'] ?? '')
+    ],
+]
+    ];
+}
+
+$colors_hex = [];
+
+foreach ($colors as $color) {
+    if (isset($COLORS_HEX[$color])) {
+        $colors_hex[] = $COLORS_HEX[$color];
     }
+}
 
     $data_products[] = [
 
@@ -128,6 +156,8 @@ foreach ($products as $product) {
         'sold' => (int)$product->get_total_sales(),
 
         'colors' => $colors,
+
+        'colors_hex' => $colors_hex,
 
         'materials' => $materials,
 

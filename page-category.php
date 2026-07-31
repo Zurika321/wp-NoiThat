@@ -1,4 +1,15 @@
 <?php
+
+$current_category = get_queried_object();
+
+$current_category_id = $current_category->term_id;
+
+$current_category_name = $current_category->name;
+
+$current_category_desc = category_description($current_category_id);
+
+?>
+<?php
 get_header("chung");
 $categories = get_the_category();
 

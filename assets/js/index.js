@@ -96,82 +96,82 @@ document.querySelectorAll(".btn-ripple").forEach((btn) => {
 });
 
 /* ================= PRODUCTS (data-driven) ================= */
-const products = [
-  {
-    name: "Sofa Milano 3 chỗ",
-    cat: "Sofa",
-    price: "18.500.000₫",
-    img: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=700&q=80",
-  },
-  {
-    name: "Bàn ăn Oak Solid",
-    cat: "Bàn ăn",
-    price: "12.900.000₫",
-    img: "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=600&h=700&q=80",
-  },
-  {
-    name: "Giường Scandinavian",
-    cat: "Giường ngủ",
-    price: "15.200.000₫",
-    img: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&h=700&q=80",
-  },
-  {
-    name: "Đèn Pendant Vàng",
-    cat: "Đèn trang trí",
-    price: "2.450.000₫",
-    img: "https://images.unsplash.com/photo-1543198126-cdcb62dc4e00?w=600&h=700&q=80",
-  },
-  {
-    name: "Ghế Armchair Da",
-    cat: "Ghế",
-    price: "8.700.000₫",
-    img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=700&q=80",
-  },
-  {
-    name: "Kệ TV Gỗ Sồi",
-    cat: "Tủ kệ",
-    price: "6.300.000₫",
-    img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=700&q=80",
-  },
-  {
-    name: "Tủ Quần Áo Modern",
-    cat: "Tủ kệ",
-    price: "14.100.000₫",
-    img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&h=700&q=80",
-  },
-  {
-    name: "Bàn Trà Marble",
-    cat: "Bàn trà",
-    price: "5.600.000₫",
-    img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600&h=700&q=80",
-  },
-];
-const prodGrid = document.getElementById("prodGrid");
-products.forEach((p, i) => {
-  const card = document.createElement("div");
-  card.className = "prod-card";
-  card.setAttribute("data-aos", "zoom-in");
-  card.setAttribute("data-aos-delay", (i % 4) * 100);
-  card.innerHTML = `
-    <div class="prod-img">
-      <img src="${p.img}" alt="${p.name}">
-      <div class="prod-overlay"></div>
-      <div class="prod-icons">
-        <button aria-label="Yêu thích"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
-        <button aria-label="Giỏ hàng"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg></button>
-      </div>
-    </div>
-    <div class="prod-body">
-      <span class="cat">${p.cat}</span>
-      <h3>${p.name}</h3>
-      <div class="prod-rating">★★★★★</div>
-      <div class="prod-footer">
-        <span class="price">${p.price}</span>
-        <button class="add-btn btn-ripple" aria-label="Thêm vào giỏ"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-      </div>
-    </div>`;
-  prodGrid.appendChild(card);
-});
+// const products = [
+//   {
+//     name: "Sofa Milano 3 chỗ",
+//     cat: "Sofa",
+//     price: "18.500.000₫",
+//     img: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Bàn ăn Oak Solid",
+//     cat: "Bàn ăn",
+//     price: "12.900.000₫",
+//     img: "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Giường Scandinavian",
+//     cat: "Giường ngủ",
+//     price: "15.200.000₫",
+//     img: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Đèn Pendant Vàng",
+//     cat: "Đèn trang trí",
+//     price: "2.450.000₫",
+//     img: "https://images.unsplash.com/photo-1543198126-cdcb62dc4e00?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Ghế Armchair Da",
+//     cat: "Ghế",
+//     price: "8.700.000₫",
+//     img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Kệ TV Gỗ Sồi",
+//     cat: "Tủ kệ",
+//     price: "6.300.000₫",
+//     img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Tủ Quần Áo Modern",
+//     cat: "Tủ kệ",
+//     price: "14.100.000₫",
+//     img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&h=700&q=80",
+//   },
+//   {
+//     name: "Bàn Trà Marble",
+//     cat: "Bàn trà",
+//     price: "5.600.000₫",
+//     img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600&h=700&q=80",
+//   },
+// ];
+// const prodGrid = document.getElementById("prodGrid");
+// products.forEach((p, i) => {
+//   const card = document.createElement("div");
+//   card.className = "prod-card";
+//   card.setAttribute("data-aos", "zoom-in");
+//   card.setAttribute("data-aos-delay", (i % 4) * 100);
+//   card.innerHTML = `
+//     <div class="prod-img">
+//       <img src="${p.img}" alt="${p.name}">
+//       <div class="prod-overlay"></div>
+//       <div class="prod-icons">
+//         <button aria-label="Yêu thích"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+//         <button aria-label="Giỏ hàng"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg></button>
+//       </div>
+//     </div>
+//     <div class="prod-body">
+//       <span class="cat">${p.cat}</span>
+//       <h3>${p.name}</h3>
+//       <div class="prod-rating">★★★★★</div>
+//       <div class="prod-footer">
+//         <span class="price">${p.price}</span>
+//         <button class="add-btn btn-ripple" aria-label="Thêm vào giỏ"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+//       </div>
+//     </div>`;
+//   prodGrid.appendChild(card);
+// });
 
 /* ================= GALLERY MASONRY + LIGHTBOX ================= */
 const galleryImages = [

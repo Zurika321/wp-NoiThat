@@ -17,15 +17,15 @@ function fmt_price($price){
       <div class="p-banner-overlay"></div>
       <div class="container p-banner-content">
         <div class="breadcrumb" data-aos="fade-up">
-          <a href="index.html">Home</a> / Products
+          <a href="<?php echo home_url('/'); ?>">Home</a> / Products
         </div>
         <h1 data-aos="fade-up" data-aos-delay="100">Sản phẩm</h1>
       </div>
     </section>
 
-   <!-- echo '<pre>';
-var_dump($products); ?>
-echo '</pre>';  -->
+ <!-- echo '<pre>';
+var_dump($data_products);
+echo '</pre>'; ?> -->
 
     <!-- TOOLBAR -->
     <div class="toolbar" id="toolbar">
@@ -250,6 +250,8 @@ data-rating="<?=$p['rating']?>"
 data-sold="<?=$p['sold']?>"
 
 data-colors='<?=json_encode($p["colors"],JSON_UNESCAPED_UNICODE)?>'
+
+data-colors_hex='<?=json_encode($p["colors_hex"],JSON_UNESCAPED_UNICODE)?>'
 
 data-materials='<?=json_encode($p["materials"],JSON_UNESCAPED_UNICODE)?>'
 
