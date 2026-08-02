@@ -1,5 +1,11 @@
-<?php get_header("cart"); ?>
+<?php get_header("chung"); ?>
+       <?php
+require_once get_template_directory() . '/data/products-data.php';
 
+function fmt_price($price){
+    return number_format($price,0,",",".") . "₫";
+}
+?>
 <main class="error-404">
         <!-- HERO 404 -->
     <section class="hero404">
@@ -34,10 +40,10 @@
             tập nội thất mới nhất của chúng tôi.
           </p>
           <div class="h404-btns">
-            <a href="index.html" class="btn btn-primary btn-ripple pulse-btn"
+            <a href="<?php echo home_url('/'); ?>" class="btn btn-primary btn-ripple pulse-btn"
               >Quay về Trang chủ</a
             >
-            <a href="products.html" class="btn btn-secondary btn-ripple"
+            <a href="<?php echo home_url('/products'); ?>" class="btn btn-secondary btn-ripple"
               >Xem sản phẩm</a
             >
           </div>
@@ -64,177 +70,104 @@
 
           <div class="mini-nav">
             <span>Truy cập nhanh:</span>
-            <a href="index.html">Trang chủ</a><span class="dot">•</span>
-            <a href="products.html">Sản phẩm</a><span class="dot">•</span>
-            <a href="about.html">Giới thiệu</a><span class="dot">•</span>
-            <a href="index.html#footer">Liên hệ</a>
+            <a href="<?php echo home_url('/'); ?>">Trang chủ</a><span class="dot">•</span>
+            <a href="<?php echo home_url('/products'); ?>">Sản phẩm</a><span class="dot">•</span>
+            <a href="<?php echo home_url('/about'); ?>">Giới thiệu</a><span class="dot">•</span>
+            <a href="<?php echo home_url('/contact'); ?>">Liên hệ</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- SECTION 2: SUGGESTED PRODUCTS -->
-    <section class="suggested">
-      <div class="container">
+<section class="suggested">
+    <div class="container">
         <div class="sec-head" data-aos="fade-up">
-          <span class="eyebrow">Gợi ý cho bạn</span>
-          <h2>Có thể bạn đang tìm</h2>
-          <p>Một vài sản phẩm nổi bật đang được yêu thích tại MỘC.</p>
+            <span class="eyebrow">Gợi ý cho bạn</span>
+            <h2>Có thể bạn đang tìm</h2>
+            <p>Một vài sản phẩm nổi bật đang được yêu thích tại MỘC.</p>
         </div>
-        <div class="sugg-grid">
-          <div class="sugg-card" data-aos="fade-up" data-aos-delay="0">
-            <a href="products.html"
-              ><div class="sugg-img">
-                <img
-                  src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&h=700&q=80"
-                  alt="Sofa Milan Premium"
-                /><span class="sugg-view">Xem ngay →</span>
-              </div>
-              <div class="sugg-body">
-                <span class="cat">Sofa</span>
-                <h3>Sofa Milan Premium</h3>
-                <span class="sugg-price">18.500.000₫</span>
-              </div></a
-            >
-          </div>
-          <div class="sugg-card" data-aos="fade-up" data-aos-delay="100">
-            <a href="products.html"
-              ><div class="sugg-img">
-                <img
-                  src="https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?w=600&h=700&q=80"
-                  alt="Bàn ăn Osaka"
-                /><span class="sugg-view">Xem ngay →</span>
-              </div>
-              <div class="sugg-body">
-                <span class="cat">Bàn</span>
-                <h3>Bàn ăn Osaka</h3>
-                <span class="sugg-price">12.900.000₫</span>
-              </div></a
-            >
-          </div>
-          <div class="sugg-card" data-aos="fade-up" data-aos-delay="200">
-            <a href="products.html"
-              ><div class="sugg-img">
-                <img
-                  src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&h=700&q=80"
-                  alt="Giường Queen Aura"
-                /><span class="sugg-view">Xem ngay →</span>
-              </div>
-              <div class="sugg-body">
-                <span class="cat">Giường</span>
-                <h3>Giường Queen Aura</h3>
-                <span class="sugg-price">15.200.000₫</span>
-              </div></a
-            >
-          </div>
-          <div class="sugg-card" data-aos="fade-up" data-aos-delay="300">
-            <a href="products.html"
-              ><div class="sugg-img">
-                <img
-                  src="https://images.unsplash.com/photo-1543198126-cdcb62dc4e00?w=600&h=700&q=80"
-                  alt="Đèn Aurora"
-                /><span class="sugg-view">Xem ngay →</span>
-              </div>
-              <div class="sugg-body">
-                <span class="cat">Đèn</span>
-                <h3>Đèn Aurora</h3>
-                <span class="sugg-price">2.450.000₫</span>
-              </div></a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- SECTION 3: POPULAR CATEGORIES -->
-    <section class="pop-cats">
-      <div class="container">
+        <div class="sugg-grid">
+            <?php foreach (array_slice($data_products, 0, 4) as $i => $p): ?>
+                <div class="sugg-card"
+                     data-aos="fade-up"
+                     data-aos-delay="<?= $i * 100 ?>">
+
+                    <a href="<?= home_url('/products/?id=' . $p['id']) ?>">
+                        <div class="sugg-img">
+                            <img
+                                src="<?= esc_url($p['img']) ?>"
+                                alt="<?= esc_attr($p['name']) ?>"
+                            >
+                            <span class="sugg-view">Xem ngay →</span>
+                        </div>
+
+                        <div class="sugg-body">
+                            <span class="cat"><?= esc_html($p['cat']) ?></span>
+                            <h3><?= esc_html($p['name']) ?></h3>
+                            <span class="sugg-price">
+                                <?= fmt_price($p['price']) ?>
+                            </span>
+                        </div>
+                    </a>
+
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+    <?php
+// Lấy tất cả category
+$categories = array_unique(array_column($data_products, 'cat'));
+sort($categories);
+
+// Ảnh mặc định cho từng category
+$category_images = [
+    'Sofa'    => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&q=80',
+    'Bàn'     => 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400&h=400&q=80',
+    'Ghế'     => 'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=400&q=80',
+    'Giường'  => 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&h=400&q=80',
+    'Tủ'      => 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&q=80',
+    'Đèn'     => 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&h=400&q=80',
+];
+?>
+
+<!-- SECTION 3: POPULAR CATEGORIES -->
+<section class="pop-cats">
+    <div class="container">
+
         <div class="sec-head" data-aos="fade-up">
-          <span class="eyebrow">Khám phá thêm</span>
-          <h2>Danh mục phổ biến</h2>
+            <span class="eyebrow">Khám phá thêm</span>
+            <h2>Danh mục phổ biến</h2>
         </div>
+
         <div class="cat-grid6">
-          <a
-            class="cat-tile"
-            href="products.html"
-            data-aos="fade-up"
-            data-aos-delay="0"
-            ><div class="cat-tile-img">
-              <img
-                src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&q=80"
-                alt="Sofa"
-              />
-            </div>
-            <h4>Sofa</h4></a
-          >
-          <a
-            class="cat-tile"
-            href="products.html"
-            data-aos="fade-up"
-            data-aos-delay="60"
-            ><div class="cat-tile-img">
-              <img
-                src="https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400&h=400&q=80"
-                alt="Bàn"
-              />
-            </div>
-            <h4>Bàn</h4></a
-          >
-          <a
-            class="cat-tile"
-            href="products.html"
-            data-aos="fade-up"
-            data-aos-delay="120"
-            ><div class="cat-tile-img">
-              <img
-                src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&h=400&q=80"
-                alt="Ghế"
-              />
-            </div>
-            <h4>Ghế</h4></a
-          >
-          <a
-            class="cat-tile"
-            href="products.html"
-            data-aos="fade-up"
-            data-aos-delay="180"
-            ><div class="cat-tile-img">
-              <img
-                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&h=400&q=80"
-                alt="Giường"
-              />
-            </div>
-            <h4>Giường</h4></a
-          >
-          <a
-            class="cat-tile"
-            href="products.html"
-            data-aos="fade-up"
-            data-aos-delay="240"
-            ><div class="cat-tile-img">
-              <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&q=80"
-                alt="Tủ"
-              />
-            </div>
-            <h4>Tủ</h4></a
-          >
-          <a
-            class="cat-tile"
-            href="products.html"
-            data-aos="fade-up"
-            data-aos-delay="300"
-            ><div class="cat-tile-img">
-              <img
-                src="https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&h=400&q=80"
-                alt="Đèn"
-              />
-            </div>
-            <h4>Đèn</h4></a
-          >
+
+            <?php foreach ($categories as $i => $cat): ?>
+
+                <a class="cat-tile"
+                   href="<?= home_url('/products?category=' . urlencode($cat)) ?>"
+                   data-cat="<?= esc_attr($cat) ?>"
+                   data-aos="fade-up"
+                   data-aos-delay="<?= $i * 60 ?>">
+
+                    <div class="cat-tile-img">
+                        <img src="<?= esc_url($category_images[$cat] ?? 'https://placehold.co/400x400?text=No+Image') ?>"
+                             alt="<?= esc_attr($cat) ?>">
+                    </div>
+
+                    <h4><?= esc_html($cat) ?></h4>
+
+                </a>
+
+            <?php endforeach; ?>
+
         </div>
-      </div>
-    </section>
+
+    </div>
+</section>
 </main>
 <div id="backTop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
 <?php

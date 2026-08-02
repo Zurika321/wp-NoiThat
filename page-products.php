@@ -299,9 +299,9 @@ JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES
             class="like-btn"
             data-id="<?=$p['id']?>">
 
-                ❤️
+                ❤️ 
 
-            </button>
+            </button> 
 
             <button
             class="quick-btn"

@@ -111,6 +111,25 @@ CATEGORIES.forEach((c) => {
   });
   catFilters.appendChild(label);
 });
+// Đọc category từ URL
+const params = new URLSearchParams(window.location.search);
+const currentCategory = params.get("category");
+
+if (currentCategory && CATEGORIES.includes(currentCategory)) {
+  state.cats = [currentCategory];
+
+  // Tick checkbox tương ứng
+  setTimeout(() => {
+    const checkbox = catFilters.querySelector(
+      `input[value="${CSS.escape(currentCategory)}"]`,
+    );
+
+    if (checkbox) checkbox.checked = true;
+
+    state.visibleCount = 12;
+    applyFilters();
+  });
+}
 const matFilters = document.getElementById("matFilters");
 MATERIALS.forEach((m) => {
   const label = document.createElement("label");
@@ -401,11 +420,18 @@ function showToast(msg) {
 const loadedReviews = new Set();
 function loadReviews(productId) {
   console.log("Loading reviews", productId);
+  loadedReviews.delete(productId);
   const panel = document.querySelector('.tab-panel[data-panel="reviews"]');
 
   panel.innerHTML = `
         <div id="reviewsLoading">
-            Đang tải đánh giá...
+            <div class="reviews-loading">
+
+    <div class="spinner"></div>
+
+    <span>Đang tải đánh giá...</span>
+
+</div>
         </div>
     `;
 
@@ -419,14 +445,43 @@ function loadReviews(productId) {
       product_id: productId,
     }),
   })
-    .then((res) => res.json())
+    .then((r) => r.json())
     .then((res) => {
+      console.log(res);
+
       if (!res.success) {
-        panel.innerHTML = "Không tải được đánh giá";
+        panel.innerHTML = `
+            <pre style="white-space:pre-wrap">
+${JSON.stringify(res.data, null, 2)}
+            </pre>
+        `;
         return;
       }
 
+      console.log(res.data.debug);
+
       panel.innerHTML = res.data.html;
+      bindReviewFilter(panel);
+      const form = panel.querySelector("#commentform");
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          submitReview(form);
+        });
+      }
+      const bars = panel.querySelectorAll(".progress-fill");
+
+      bars.forEach((bar) => {
+        const w = bar.style.width;
+        bar.style.width = "0";
+
+        requestAnimationFrame(() => {
+          bar.style.transition = "width .8s ease";
+          bar.style.width = w;
+        });
+      });
     });
 }
 
@@ -459,11 +514,12 @@ function detailHTML(p) {
       <h2>${p.name}</h2>
       <div class="detail-meta"><span class="stars">${"★".repeat(Math.round(p.rating))}${"☆".repeat(5 - Math.round(p.rating))}</span><span>${p.rating}</span><span>·</span><span>Đã bán ${p.sold.toLocaleString("vi-VN")}</span></div>
       <div class="detail-price-row">
-        <span class="detail-price" id="detail-price">${fmt(p.price)}</span>
-        ${p.oldPrice ? `<span class="detail-old">${fmt(p.oldPrice)}</span><span class="detail-off">-${discount}%</span>` : ""}
+        <span class="detail-price" id="detail-price">---</span>
+      
       </div>
       <p style="font-size:13.5px;color:#888;line-height:1.7;">${p.desc.slice(0, 110)}...</p>
-
+      <p style="font-size:13.5px;line-height:1.7;" id="stock_in_va">Tồn kho : ...</p>
+      
       <div class="opt-label">Màu sắc</div>
       <div class="opt-colors" id="optColors">
         ${p.colors
@@ -582,6 +638,8 @@ function bindDetailEvents(root, p) {
       });
       if (variation) {
         document.querySelector("#detailMainImg").src = variation.image;
+        document.querySelector("#stock_in_va").innerHTML =
+          "Tồn kho : " + variation.stock_quantity;
         document.querySelector("#detail-price").innerHTML =
           variation.regular_price > variation.price
             ? `
@@ -609,7 +667,7 @@ function bindDetailEvents(root, p) {
       activeSize = el.dataset.size;
 
       const variation = p.variations.find((v) => {
-        console.log(v.attributes.color.name + " --- " + v.attributes.size.name);
+        // console.log(v.attributes.color.name + " --- " + v.attributes.size.name);
 
         const sameColor =
           !v.attributes.color.name || v.attributes.color.name === activeColor;
@@ -622,6 +680,23 @@ function bindDetailEvents(root, p) {
 
       if (variation) {
         document.querySelector("#detailMainImg").src = variation.image;
+        document.querySelector("#stock_in_va").innerHTML =
+          "Tồn kho : " + variation.stock_quantity;
+        document.querySelector("#detail-price").innerHTML =
+          variation.regular_price > variation.price
+            ? `
+      <span style="font-size:28px;font-weight:700;color:#d32f2f;">
+        ${fmt(variation.price)}
+      </span>
+      <del style="margin-left:10px;color:#999;font-size:18px;">
+        ${fmt(variation.regular_price)}
+      </del>
+    `
+            : `
+      <span style="font-size:28px;font-weight:700;color:#d32f2f;">
+        ${fmt(variation.price)}
+      </span>
+    `;
       }
     }),
   );
@@ -724,6 +799,11 @@ function bindDetailEvents(root, p) {
   );
   const closeBtn = root.querySelector("#detailCloseBtn");
   if (closeBtn) closeBtn.addEventListener("click", () => deselectProduct());
+  const firstColor = root.querySelector(".opt-color");
+  const firstSize = root.querySelector(".opt-size");
+
+  if (firstColor) firstColor.click();
+  if (firstSize) firstSize.click();
 }
 
 /* ================= SELECTION FLOW ================= */
@@ -973,8 +1053,69 @@ setTimeout(() => {
 
     if (id && PRODUCTS.some((p) => p.id === id)) {
       selectProduct(id);
-    } else {
+    } else if (id) {
       showToast("id sản phẩm không tồn tại");
     }
   });
 }, 700);
+
+document.addEventListener("submit", function (e) {
+  const form = e.target;
+
+  if (!form.matches("#commentform")) return;
+
+  e.preventDefault();
+
+  submitReview(form);
+});
+
+function submitReview(form) {
+  const data = new FormData(form);
+
+  data.append("action", "submit_product_review");
+
+  fetch(myAjax.ajaxurl, {
+    method: "POST",
+    body: data,
+  })
+    .then((r) => r.json())
+    .then((res) => {
+      console.log(res);
+
+      if (!res.success) {
+        alert(res.data.message);
+        return;
+      }
+
+      loadedReviews.delete(Number(form.comment_post_ID.value));
+
+      loadReviews(Number(form.comment_post_ID.value));
+
+      form.reset();
+
+      showToast("Đánh giá thành công");
+    });
+}
+
+function bindReviewFilter(panel) {
+  panel.querySelectorAll(".review-filter-btn").forEach((btn) => {
+    btn.onclick = function () {
+      panel
+        .querySelectorAll(".review-filter-btn")
+        .forEach((x) => x.classList.remove("active"));
+
+      this.classList.add("active");
+
+      const rating = this.dataset.rating;
+
+      panel.querySelectorAll(".review-item").forEach((item) => {
+        if (rating === "0") {
+          item.style.display = "flex";
+          return;
+        }
+
+        item.style.display = item.dataset.rating === rating ? "flex" : "none";
+      });
+    };
+  });
+}

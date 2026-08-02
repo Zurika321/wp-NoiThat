@@ -114,6 +114,8 @@ foreach ($product->get_available_variations() as $v) {
 
         'stock' => $variation->is_in_stock(),
 
+        'stock_quantity' => (int) $variation->get_stock_quantity(),
+
         'image' => wp_get_attachment_url($variation->get_image_id()),
 
         'attributes' => [
